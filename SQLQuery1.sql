@@ -1,5 +1,8 @@
 use ContosoRetailDW
 
+
+--EXERCICIOS 1
+
 --1 a)
 --SELECT ProductName
 --FROM DimProduct
@@ -52,3 +55,72 @@ use ContosoRetailDW
 --SELECT DISTINCT ProductKey
 --FROM DimProduct
 
+--EXERCICIOS 2
+
+--1)
+--SELECT TOP(100) SalesAmount
+--FROM FactSales
+--ORDER BY SalesAmount DESC
+
+--2)
+--SELECT TOP (10) UnitPrice, Weight
+--FROM DimProduct
+--ORDER BY UnitPrice DESC, Weight DESC
+
+--3)
+--SELECT ProductName AS 'Nome do Produto', Weight AS 'Peso'
+--FROM DimProduct
+--WHERE Weight >= 220
+--ORDER BY Weight DESC
+
+--4)
+--SELECT DISTINCT 
+--StoreName AS 'Nome da Loja', 
+--OpenDate AS 'Data de Abertura', 
+--EmployeeCount AS 'Quantidade de funcionários'
+--FROM DimStore
+--WHERE Status LIKE 'On'
+--306 lojas no total e 294 ativas
+
+--5)
+--SELECT ProductKey, ProductName, AvailableForSaleDate
+--FROM DimProduct
+--WHERE ProductName LIKE '%Home Theater%' 
+--AND AvailableForSaleDate = '15-03-2009'
+
+--6)
+--SELECT StoreName, CloseDate
+--FROM DimStore
+--WHERE CloseDate IS NOT NULL
+
+--7)
+--SELECT StoreName, EmployeeCount
+--FROM DimStore
+--WHERE EmployeeCount BETWEEN 1 AND 20
+----1 máquina de café
+
+--SELECT StoreName, EmployeeCount
+--FROM DimStore
+--WHERE EmployeeCount BETWEEN 20 AND 50
+----2 máquinas de café
+
+--SELECT StoreName, EmployeeCount
+--FROM DimStore
+--WHERE EmployeeCount >= 51
+----3 máquinas de café
+
+--8)
+--SELECT ProductKey, ProductName, UnitPrice
+--FROM dimProduct
+--WHERE ProductName LIKE '%LCD%'
+
+--9)
+--SELECT ColorName, BrandName
+--FROM dimProduct
+--WHERE ColorName IN ('Green', 'Orange', 'Black', 'Silver', 'Pink') AND BrandName IN ('Contoso', 'Litware', 'Fabrikam')
+
+--10)
+--SELECT ColorName, BrandName, UnitPrice
+--FROM DimProduct
+--WHERE ColorName IN ('Silver') AND BrandName IN ('Contoso') AND UnitPrice BETWEEN 10 AND 30
+--ORDER BY UnitPrice Desc
