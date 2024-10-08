@@ -130,3 +130,91 @@ use ContosoRetailDW
 --FROM DimProduct
 --WHERE ColorName IN ('Silver') AND BrandName IN ('Contoso') AND UnitPrice BETWEEN 10 AND 30
 --ORDER BY UnitPrice Desc
+
+--SELECT 
+--COUNT(CustomerKey) AS 'Qtd. Mulheres'
+--FROM DimCustomer
+--WHERE Gender = 'F'
+
+--SELECT 
+--COUNT(DISTINCT Departaments) AS 'Qtd. Areas'
+--FROM DimEmployee
+
+--SELECT 
+--SUM(SalesQuantity) AS 'Qtd. Vendas'
+--FROM FactSales
+--WHERE UnitPrice >= 100
+
+--SELECT 
+--AVG(SalesQuantity) AS 'Média das vendas'
+--FROM FactSales
+--WHERE UnitPrice >= 100
+
+--RETORNA A MENOR QUANTIDADE VENDIDA
+--SELECT 
+--MIN(SalesQuantity) AS 'Min Venda'
+--FROM FactSales
+
+--RETORNA A MAIOR QUANTIDADE VENDIDA
+--SELECT 
+--MAX(SalesQuantity) AS 'Min Venda'
+--FROM FactSales
+
+--Exercícios 3
+
+--1)
+SELECT SUM(SalesQuantity) AS 'Qtd. Vendas', 
+SUM(ReturnQuantity) AS 'Qtd. Retorno' 
+FROM FactSales
+ 
+-- 2)
+SELECT 
+	AVG(YearlyIncome) AS 'Salário'
+FROM dimCustomer
+	WHERE Occupation = 'Professional'
+
+--3)
+--a), b)
+SELECT TOP(1) StoreName, EmployeeCount
+FROM dimStore
+ORDER BY EmployeeCount DESC
+	
+--c), d)
+SELECT TOP(1) StoreName, EmployeeCount
+FROM dimStore
+WHERE EmployeeCount IS NOT NULL
+ORDER BY EmployeeCount ASC
+
+--4) 
+SELECT
+	COUNT(EmployeeKey) AS 'Qtd. Mulheres'
+FROM DimEmployee
+	WHERE Gender = 'F' 
+----87 Funcionárias
+
+SELECT
+	COUNT(EmployeeKey) AS 'Qtd. Homem'
+FROM DimEmployee
+	WHERE Gender = 'M' 
+----206 Funcionários
+
+
+--b)
+SELECT TOP(1)
+	FirstName, LastName, EmailAddress, HireDate
+FROM DimEmployee
+	WHERE Gender = 'M'
+	ORDER BY HireDate ASC
+
+SELECT TOP(1)
+	FirstName, LastName, EmailAddress, HireDate
+FROM DimEmployee
+	WHERE Gender = 'F'
+	ORDER BY HireDate ASC
+
+--5)
+SELECT 
+	COUNT(DISTINCT ColorName) AS 'Qtd. Cores', 
+	COUNT(DISTINCT BrandName) AS 'Qtd. Marcas', 
+	COUNT(DISTINCT ClassName) AS 'Qtd. Classes'
+FROM DimProduct
