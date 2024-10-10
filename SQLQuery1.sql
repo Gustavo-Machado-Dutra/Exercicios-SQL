@@ -346,11 +346,17 @@ FROM DimProduct
 
 --Exercicios 4
 
---1)
+--1) Faça um resumo da quantidade vendida (Sales Quantity) de acordo com o canal de vendas (channelkey).
+--b Faça um agrupamento mostrando a quantidade total vendida (Sales Quantity) e quantidade total devolvida
+--(Return Quantity) de acordo com o ID das lojas (StoreKey). 
+--c Faça um resumo do valor total vendido (SalesAmount) para cada canal de venda, mas apenas para o ano de 2007
+
+--a)
 SELECT 
-	SalesQuantity,
-	channelKey
+	channelKey,
+	SUM(SalesQuantity) AS 'Vendas'
 FROM FactSales
+GROUP BY channelKey
 
 --b)
 SELECT 
@@ -364,13 +370,18 @@ ORDER BY StoreKey ASC
 --c)
 SELECT 
 	channelKey,
-	SUM(SalesAmount) AS 'Total de vendas',
-	DateKey
+	SUM(SalesQuantity) AS 'Total de vendas'
 FROM FactSales
-WHERE DateKey = '2007'
-GROUP BY channelKey, DateKey
+WHERE DateKey BETWEEN '01/01/2007' AND '31/12/2007'
+GROUP BY channelKey
 
---2)
+--2) Você precisa fazer uma análise de vendas por produtos. O objetivo final é descobrir o valor 
+--total vendido (SalesAmount) por produto (ProductKey).
+--a.A tabela final deverá estar ordenada de 
+--acordo com a quantidade vendida e, além disso, mostrar apenas os produtos que tiveram um resultado 
+--final de vendas maior do que $5.000.000.
+--b.Faça uma adaptação no exercício anterior e mostre os Top
+--10 produtoscom mais vendas. Desconsidere o filtro de $5.000.000 aplicado.
 
 --a)
 SELECT
@@ -380,6 +391,7 @@ FROM
 	FactSales
 GROUP BY ProductKey
 HAVING SUM(SalesAmount) >= 5000000
+ORDER BY SUM(SalesAmount) DESC
 
 --b)
 SELECT TOP (10)
@@ -388,10 +400,12 @@ SELECT TOP (10)
 FROM
 	FactSales
 GROUP BY ProductKey
-HAVING SUM(SalesAmount) >= 5000000
 ORDER BY SUM(SalesAmount) DESC
 
---3)
+--3) a. Você deve fazer uma consulta à tabela FactOnlineSales e descobrir. qual é o ID (CustomerKey)
+--do cliente que mais realizou compras online (de acordo com a coluna Sales Quantity). 
+--b. Feito isso, faça um agrupamento de total vendido (Sales Quantity) por ID do produto e descubra quais foram os 
+--top 3 produtos mais comprados pelo cliente da letra a).
 
 --a)
 SELECT TOP (1)
@@ -408,10 +422,12 @@ SELECT TOP (3)
 	COUNT(SalesQuantity) AS 'Qtd. Vendas'
 FROM FactOnlineSales
 GROUP BY CustomerKey, ProductKey
-HAVING CustomerKey = '19037'
+HAVING CustomerKey = 19037
 ORDER BY COUNT(SalesQuantity) DESC
 
---4)
+--4) a. Faça um agrupamento e descubra a quantidade total de produtos por marca. 
+--b Determine a média do preço unitário (UnitPrice) para cada ClassName. 
+--c. Faça um agrupamento de cores e descubra o peso total que cada cor de produto possui.
 
 --a)
 SELECT 
@@ -435,24 +451,27 @@ SELECT
 FROM dimProduct
 GROUP BY ColorName
 
---5)
+--5) Você deverá descobrir o peso total para cada tipo de produto (Stock TypeName). 
+--A tabela final deve considerar apenas a marca 'Contoso' e ter os seus valores classificados em ordem decrescente,
 
---SELECT 
---	BrandName,
---	StockTypeName,
---	SUM(Weight) AS 'Peso total'
---FROM dimProduct
---WHERE BrandName = 'Contoso'
---GROUP BY  BrandName, StockTypeName
+SELECT 
+	BrandName,
+	StockTypeName,
+	SUM(Weight) AS 'Peso total'
+FROM dimProduct
+WHERE BrandName = 'Contoso'
+GROUP BY  BrandName, StockTypeName
 
---6)
+--6) Você seria capaz de confirmar se todas as marcas dos produtos possuem à disposição todas as 16 opções de cores?
+
 SELECT 
 	BrandName,
 	COUNT(DISTINCT ColorName) AS 'Qtd. Cores'
 FROM dimProduct
 GROUP BY BrandName
 
---7)
+--7) Faça um agrupamento para saber o total de clientes de acordo com o Sexo e também a média salarial
+--de acordo com o Sexo. Corrija qualquer resultado "inesperado" com os seus conhecimentos em SOL
 
 SELECT 
 	Gender,
@@ -462,7 +481,9 @@ FROM DimCustomer
 WHERE Gender IS NOT NULL
 GROUP BY Gender 
 
---8)
+--8) Faça um agrupamento para descobrir a quantidade total de clientes e a média salarial 
+--de acordo com o seu nivel escolar. Utilize a coluna Education da tabela DimCustomer para 
+--fazer esse agrupamento.
 
 SELECT 
 	Education,
@@ -472,7 +493,9 @@ FROM DimCustomer
 WHERE Education IS NOT NULL
 GROUP BY Education
 
---9)
+--9)Faça uma tabela resumo mostrando a quantidade total de funcionários de acordo com o 
+--Departamento (DepartmentName). Importante: Você deverá considerar apenas os funcionários ativos.
+
 SELECT 
 	DepartmentName,
 	COUNT(EmployeeKey) AS 'Qtd. Cliente'
@@ -480,12 +503,13 @@ FROM DimEmployee
 WHERE Status = 'Current'
 GROUP BY DepartmentName
 
-10)
+--10) Faça uma tabela resumo mostrando o total de Vacation Hours para cada cargo (Title). 
+--Você deve considerar apenas as mulheres, dos departamentos de Production, Marketing, Engineering 
+--e Finance, para os funcionários contratados entre os anos de 1999 e 2000.
 
 SELECT 
-	DepartmentName,
 	Title,
 	SUM(VacationHours) AS 'Férias'
 FROM dimEmployee
-WHERE HireDate BETWEEN '1999' AND '2000' AND Gender = 'F' AND 
-GROUP BY Title, DepartmentName
+WHERE HireDate BETWEEN '1999/01/01' AND '2000/12/31' AND Gender = 'F' AND DepartmentName IN ('Production', 'Marketing', 'Engineering', 'Finance')
+GROUP BY Title
