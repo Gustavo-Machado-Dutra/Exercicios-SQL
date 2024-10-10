@@ -343,3 +343,149 @@ SELECT
 	COUNT(DISTINCT BrandName) AS 'Qtd. Marcas', 
 	COUNT(DISTINCT ClassName) AS 'Qtd. Classes'
 FROM DimProduct
+
+--Exercicios 4
+
+--1)
+SELECT 
+	SalesQuantity,
+	channelKey
+FROM FactSales
+
+--b)
+SELECT 
+	StoreKey,
+	SUM(SalesQuantity) AS 'Total de vendas',
+	SUM(ReturnQuantity) AS 'Total devolvido'
+FROM FactSales
+GROUP BY StoreKey
+ORDER BY StoreKey ASC
+
+--c)
+SELECT 
+	channelKey,
+	SUM(SalesAmount) AS 'Total de vendas',
+	DateKey
+FROM FactSales
+WHERE DateKey = '2007'
+GROUP BY channelKey, DateKey
+
+--2)
+
+--a)
+SELECT
+	ProductKey,
+	SUM(SalesAmount) AS 'Total de vendas'
+FROM
+	FactSales
+GROUP BY ProductKey
+HAVING SUM(SalesAmount) >= 5000000
+
+--b)
+SELECT TOP (10)
+	ProductKey,
+	SUM(SalesAmount) AS 'Total de vendas'
+FROM
+	FactSales
+GROUP BY ProductKey
+HAVING SUM(SalesAmount) >= 5000000
+ORDER BY SUM(SalesAmount) DESC
+
+--3)
+
+--a)
+SELECT TOP (1)
+	CustomerKey, 
+	COUNT(SalesQuantity) AS 'Qtd. Vendas'
+FROM FactOnlineSales
+GROUP BY CustomerKey
+ORDER BY COUNT(SalesQuantity) DESC
+
+--b)
+SELECT TOP (3)
+	CustomerKey, 
+	ProductKey,
+	COUNT(SalesQuantity) AS 'Qtd. Vendas'
+FROM FactOnlineSales
+GROUP BY CustomerKey, ProductKey
+HAVING CustomerKey = '19037'
+ORDER BY COUNT(SalesQuantity) DESC
+
+--4)
+
+--a)
+SELECT 
+	BrandName AS 'Marca',
+	COUNT(BrandName) AS 'Qtd. Produtos da marca'
+FROM dimProduct
+GROUP BY BrandName
+
+--b)
+SELECT
+	ClassName,
+	AVG(UnitPrice) AS 'Média Preço unitário'
+FROM DimProduct
+GROUP BY ClassName
+
+--c)
+
+SELECT
+	ColorName,
+	SUM(Weight) AS 'Peso total'
+FROM dimProduct
+GROUP BY ColorName
+
+--5)
+
+--SELECT 
+--	BrandName,
+--	StockTypeName,
+--	SUM(Weight) AS 'Peso total'
+--FROM dimProduct
+--WHERE BrandName = 'Contoso'
+--GROUP BY  BrandName, StockTypeName
+
+--6)
+SELECT 
+	BrandName,
+	COUNT(DISTINCT ColorName) AS 'Qtd. Cores'
+FROM dimProduct
+GROUP BY BrandName
+
+--7)
+
+SELECT 
+	Gender,
+	COUNT(CustomerKey) AS 'Qtd. Cliente',
+	AVG(YearlyIncome) AS 'Média salárial'
+FROM DimCustomer
+WHERE Gender IS NOT NULL
+GROUP BY Gender 
+
+--8)
+
+SELECT 
+	Education,
+	COUNT(CustomerKey) AS 'Qtd. Cliente',
+	AVG(YearlyIncome) AS 'Média salárial'
+FROM DimCustomer
+WHERE Education IS NOT NULL
+GROUP BY Education
+
+--9)
+SELECT 
+	DepartmentName,
+	COUNT(EmployeeKey) AS 'Qtd. Cliente'
+FROM DimEmployee
+WHERE Status = 'Current'
+GROUP BY DepartmentName
+
+10)
+
+SELECT 
+	DepartmentName,
+	Title,
+	SUM(VacationHours) AS 'Férias'
+FROM dimEmployee
+WHERE HireDate BETWEEN '1999' AND '2000' AND Gender = 'F' AND 
+GROUP BY Title, DepartmentName
