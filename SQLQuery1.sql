@@ -513,3 +513,43 @@ SELECT
 FROM dimEmployee
 WHERE HireDate BETWEEN '1999/01/01' AND '2000/12/31' AND Gender = 'F' AND DepartmentName IN ('Production', 'Marketing', 'Engineering', 'Finance')
 GROUP BY Title
+
+
+--Exercicios 5
+
+--1)
+SELECT 
+    ProductSubcategoryName,
+	ProductKey,
+	ProductName
+FROM 
+    DimProduct
+INNER JOIN 
+    DimProductSubcategory
+ON 
+    DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+
+2)
+SELECT 
+    ProductSubcategoryName,
+	ProductCategoryName,
+	DimProductSubcategory.ProductCategoryKey
+FROM 
+    DimProductCategory
+INNER JOIN 
+    DimProductSubcategory
+ON 
+    DimProductSubcategory.ProductCategoryKey = DimProductCategory.ProductCategoryKey
+
+
+SELECT 
+    DimProductSubcategory.ProductSubcategoryKey,
+    COUNT(DimProduct.ProductSubcategoryKey) AS 'Qtd. Produtos'
+FROM 
+    DimProductSubcategory
+FULL JOIN 
+    DimProduct
+ON 
+    DimProductSubcategory.ProductSubcategoryKey = DimProduct.ProductSubcategoryKey
+GROUP BY 
+    DimProductSubcategory.ProductSubcategoryKey
