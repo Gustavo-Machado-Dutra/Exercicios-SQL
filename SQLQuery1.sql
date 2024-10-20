@@ -529,7 +529,7 @@ INNER JOIN
 ON 
     DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
 
-2)
+--2)
 SELECT 
     ProductSubcategoryName,
 	ProductCategoryName,
@@ -540,6 +540,108 @@ INNER JOIN
     DimProductSubcategory
 ON 
     DimProductSubcategory.ProductCategoryKey = DimProductCategory.ProductCategoryKey
+
+--3)
+SELECT 
+	StoreKey,
+	StoreName,
+	EmployeeCount,
+	ContinentName,
+	RegionCountryName
+FROM 
+	DimStore
+LEFT JOIN
+	DimGeography
+ON 
+	DimStore.GeographyKey = DimGeography.GeographyKey
+
+--4) 
+--SELECT 
+--	ProductName,
+--	BrandName,
+--	ColorName,
+--	UnitPrice,
+--	ProductCategoryDescription
+--FROM 
+--	DimProduct
+--LEFT JOIN
+--	DimProductCategory
+--ON 
+--	DimProduct. = DimProductCategory.ProductCategoryDescription
+
+--5)
+SELECT TOP(100)
+	StrategyPlanKey,
+	Datekey,
+	AccountName,
+	Amount
+FROM 
+	FactStrategyPlan
+INNER JOIN
+	DimAccount
+ON 
+	FactStrategyPlan.AccountKey = DimAccount.AccountKey
+
+--6)
+SELECT TOP(100)
+	StrategyPlanKey,
+	Datekey,
+	ScenarioName,
+	Amount
+FROM
+	FactStrategyPlan
+INNER JOIN 
+	DimScenario
+ON 
+	FactStrategyPlan.ScenarioKey = DimScenario.ScenarioKey
+
+--7)
+SELECT
+	ProductSubcategoryName 
+FROM
+	DimProduct
+RIGHT JOIN 
+	DimProductSubcategory
+ON 
+	DimProduct.ProductSubcategoryKey = DimProductSubcategory.ProductSubcategoryKey
+WHERE 
+	ProductName IS NULL
+
+--8)
+SELECT DISTINCT
+	BrandName,
+	ChannelName
+FROM
+	DimProduct CROSS JOIN DimChannel
+WHERE 
+	BrandName IN ('Contoso', 'Fabrikam', 'Litware')
+
+--9)
+SELECT TOP (100)
+	OnlineSalesKey,
+	DateKey,
+	PromotionName,
+	SalesAmount
+FROM
+	FactOnlineSales
+INNER JOIN 
+	DimPromotion
+ON 
+	FactOnlineSales.PromotionKey = DimPromotion.PromotionKey
+WHERE
+	PromotionName <> 'No Discount'
+ORDER BY
+	DateKey ASC
+
+--10)
+
+
+
+
+
+
+
+
 
 
 SELECT 
